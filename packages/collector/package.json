@@ -1,0 +1,42 @@
+{
+  "name": "sctl-collector",
+  "version": "1.0.0",
+  "description": "Star Citizen Transaction Log Collector",
+  "main": "build/electron/main.js",
+  "type": "module",
+  "scripts": {
+    "build": "cp ../../assets/logo.png build/client/logo.png && cp src/client/index.html build/client/index.html && esbuild src/client/index.ts src/client/global.ts src/client/preload.ts src/electron/main.ts src/electron/config.ts src/electron/main.ts src/electron/game-stream.ts --outdir=build --outbase=src",
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --linux --win"
+  },
+  "author": "Thomas LaFreniere",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "electron": "^28.2.2",
+    "electron-builder": "^24.9.1",
+    "esbuild": "^0.20.0"
+  },
+  "build": {
+    "productName": "SCTLCollector",
+    "appId": "co.lafreniere.sctl",
+    "files": ["build",
+      "node_modules",
+      "package.json"],
+    "directories": {
+      "app": ".",
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Development"
+    }
+  }
+}

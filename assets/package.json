@@ -1,0 +1,10 @@
+{
+  "name": "sctl-assets",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "inkscape -w 512 -h 512 logo.svg -o logo.png"
+  },
+  "author": "Thomas LaFreniere",
+  "license": "GPL-3.0"
+}
