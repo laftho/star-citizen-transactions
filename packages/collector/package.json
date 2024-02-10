@@ -14,7 +14,7 @@
     "start": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder --linux --win",
-    "release": "electron-builder"
+    "release": "electron-builder --linux --win"
   },
   "author": "Thomas LaFreniere",
   "license": "GPL-3.0",
