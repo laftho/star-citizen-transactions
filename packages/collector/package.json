@@ -13,7 +13,8 @@
     "build": "cp ../../assets/logo.png build/client/logo.png && cp src/client/index.html build/client/index.html && esbuild src/client/index.ts src/client/global.ts src/client/preload.ts src/electron/main.ts src/electron/config.ts src/electron/main.ts src/electron/game-stream.ts --outdir=build --outbase=src",
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder --linux --win"
+    "dist": "electron-builder --linux --win",
+    "release": "electron-builder"
   },
   "author": "Thomas LaFreniere",
   "license": "GPL-3.0",
@@ -35,12 +36,14 @@
     "win": {
       "target": [
         "nsis"
-      ]
+      ],
+      "publish": ["github"]
     },
     "linux": {
       "target": [
         "AppImage"
       ],
+      "publish": ["github"],
       "category": "Development"
     }
   }
