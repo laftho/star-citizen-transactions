@@ -2,6 +2,11 @@
   "name": "sctl-collector",
   "version": "1.0.0",
   "description": "Star Citizen Transaction Log Collector",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/laftho/star-citizen-transactions.git",
+    "directory": "packages/collector"
+  },
   "main": "build/electron/main.js",
   "type": "module",
   "scripts": {
