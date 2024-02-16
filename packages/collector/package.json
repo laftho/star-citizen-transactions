@@ -10,7 +10,7 @@
   "main": "build/electron/main.js",
   "type": "module",
   "scripts": {
-    "build": "cp ../../assets/logo.png build/client/logo.png && cp src/client/index.html build/client/index.html && esbuild src/client/index.ts src/client/global.ts src/client/preload.ts src/electron/main.ts src/electron/*.ts --outdir=build --outbase=src",
+    "build": "cp ../../assets/logo.png build/client/logo.png && cp src/client/index.html build/client/index.html && esbuild src/client/index.ts src/client/global.ts src/client/preload.ts src/electron/*.ts src/electron/**/*.ts --outdir=build --outbase=src",
     "start": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder --linux --win",

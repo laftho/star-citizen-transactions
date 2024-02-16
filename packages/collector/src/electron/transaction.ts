@@ -9,7 +9,9 @@ export class Transaction {
   amount: number;
   quantity: number;
   item: string;
+  tags: string[];
 
   constructor() {
+    this.tags = [];
   }
 }

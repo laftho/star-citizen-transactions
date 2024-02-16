@@ -2,6 +2,9 @@ import { app, Tray, Menu, nativeImage, BrowserWindow, ipcMain, dialog } from "el
 import { Config } from "./config.js";
 import { GameStream } from "./game-stream.js";
 import { absolute } from "./path-util.js";
+import { LoginProcessor } from "./processors/login.js";
+import { BuyProcessor } from "./processors/standardBuy.js";
+import { Contextualizer } from "./contextualizer.js";
 
 async function handleFileOpen(window: BrowserWindow) {
   const { canceled, filePaths } = await dialog.showOpenDialog(window, {
@@ -21,6 +24,11 @@ app.whenReady().then(async () => {
   await config.load();
 
   const gamestream = new GameStream(config.cursor);
+  const contextualizer = new Contextualizer();
+
+  const loginProcessor = new LoginProcessor();
+
+  contextualizer.use(loginProcessor);
 
   // @ts-ignore
   const logo = nativeImage.createFromPath(absolute("../../build/client/logo.png", import.meta.url));
@@ -58,13 +66,18 @@ app.whenReady().then(async () => {
 
   gamestream.on("line", (line) => {
     config.cursor = gamestream.cursor;
-    win.webContents.send("line", line);
+    contextualizer.process(line);
+  });
+
+  loginProcessor.on("login", (profile) => {
+    win.webContents.send("line", JSON.stringify(profile));
   });
 
   ipcMain.on("open-file-dialog", async () => {
     const gameLogPath = await handleFileOpen(win);
 
     config.gameLogPath = gameLogPath;
+    config.cursor = undefined;
     await config.save();
   });
 
@@ -74,5 +87,3 @@ app.whenReady().then(async () => {
 
   gamestream.stream(config.gameLogPath, config.cursor);
 });
-
-

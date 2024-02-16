@@ -6,6 +6,8 @@ export class GameStream extends EventEmitter {
   private file: string;
   private rl: Interface;
   public cursor: string;
+  private current: string;
+  private instances = 1;
 
   constructor(cursor: string) {
     super();
@@ -41,6 +43,14 @@ export class GameStream extends EventEmitter {
 
       const timestamp = line.substring(1, 25);
 
+      if (this.current === timestamp) {
+        this.instances += 1;
+      } else {
+        this.instances = 1;
+      }
+
+      this.current = timestamp;
+
       if (this.cursor) {
         const dt = Date.parse(timestamp);
 
@@ -48,16 +58,22 @@ export class GameStream extends EventEmitter {
           return;
         }
 
-        const lt = Date.parse(this.cursor);
+        const [time, count] = this.cursor.split("|");
+
+        const lt = Date.parse(time);
 
         if (dt < lt) {
           return;
         }
+
+        if (dt === lt && this.instances <= Number.parseInt(count)) {
+          return;
+        }
       }
 
-      this.cursor = timestamp;
+      this.cursor = `${timestamp}|${this.instances}`;
 
-      console.log(line);
+      // console.log(line);
       this.emit("line", line);
     });
 
