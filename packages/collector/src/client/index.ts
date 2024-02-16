@@ -38,7 +38,8 @@ class Config extends EventTarget {
 }
 
 function log(message) {
-  document.getElementById("log").innerText += message;
+  const logEl = document.getElementById("log") as HTMLTextAreaElement;
+  logEl.value += message;
 }
 
 (() => {

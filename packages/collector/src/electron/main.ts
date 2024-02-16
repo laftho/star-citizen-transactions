@@ -1,6 +1,7 @@
 import { app, Tray, Menu, nativeImage, BrowserWindow, ipcMain, dialog } from "electron";
 import { Config } from "./config.js";
 import { GameStream } from "./game-stream.js";
+import { absolute } from "./path-util.js";
 
 async function handleFileOpen(window: BrowserWindow) {
   const { canceled, filePaths } = await dialog.showOpenDialog(window, {
@@ -22,7 +23,7 @@ app.whenReady().then(async () => {
   const gamestream = new GameStream(config.cursor);
 
   // @ts-ignore
-  const logo = nativeImage.createFromPath(new URL("../../build/client/logo.png", import.meta.url).toString().split("file://")[1]);
+  const logo = nativeImage.createFromPath(absolute("../../build/client/logo.png", import.meta.url));
 
   const tray = new Tray(logo);
 
@@ -35,12 +36,16 @@ app.whenReady().then(async () => {
   tray.setToolTip("Star Citizen Transaction Log Collector");
   tray.setTitle("Star Citizen Transaction Log Collector");
 
+  const preloadScript = absolute("../../build/client/preload.js", import.meta.url);
+
+  console.log(preloadScript);
+
   const win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
       // @ts-ignore
-      preload: new URL("../../build/client/preload.js", import.meta.url).toString().split("file://")[1]
+      preload: preloadScript
     }
   });
   win.loadFile("build/client/index.html");
